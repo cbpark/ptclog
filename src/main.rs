@@ -16,41 +16,35 @@ fn main() -> Result<(), Box<dyn Error>> {
     let mut prev_line = String::new();
     let mut counter: u32 = 1;
     if let Ok(lines) = read_lines(input_file) {
-        for line in lines {
-            if let Ok(line) = line {
-                if line.eq(&prev_line) {
-                    continue;
-                } else {
-                    prev_line = line.clone();
-                }
-
-                let mut entries = line.split_whitespace();
-                let name = parse::<String>("name", entries.next())?;
-                let date_init = parse::<String>("date_init", entries.next())?;
-                let time_init = parse::<String>("time_init", entries.next())?;
-                let date_fin = parse::<String>("date_fin", entries.next())?;
-                let time_fin = parse::<String>("time_fin", entries.next())?;
-
-                if date_init.eq(&date_fin) && time_init.eq(&time_fin) {
-                    continue;
-                }
-
-                counter += 1;
-
-                let log = Log {
-                    name,
-                    date_init,
-                    time_init,
-                    date_fin,
-                    time_fin,
-                };
-
-                writeln!(
-                    &mut output_file,
-                    "{} {} {}",
-                    "고에너지물리계산", "박찬범", log
-                )?;
+        for line in lines.flatten() {
+            if line.eq(&prev_line) {
+                continue;
+            } else {
+                prev_line = line.clone();
             }
+
+            let mut entries = line.split_whitespace();
+            let name = parse::<String>("name", entries.next())?;
+            let date_init = parse::<String>("date_init", entries.next())?;
+            let time_init = parse::<String>("time_init", entries.next())?;
+            let date_fin = parse::<String>("date_fin", entries.next())?;
+            let time_fin = parse::<String>("time_fin", entries.next())?;
+
+            if date_init.eq(&date_fin) && time_init.eq(&time_fin) {
+                continue;
+            }
+
+            counter += 1;
+
+            let log = Log {
+                name,
+                date_init,
+                time_init,
+                date_fin,
+                time_fin,
+            };
+
+            writeln!(&mut output_file, "고에너지물리계산 박찬범 {log}")?;
         }
     }
 
@@ -80,10 +74,8 @@ impl fmt::Display for Log {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(
             f,
-            "{} {} {} {} {} {} {}",
+            "{} IBS CTPU {} {} {} {}",
             self.name,
-            "IBS",
-            "CTPU",
             self.date_init,
             self.time_init,
             self.date_fin,
