@@ -44,7 +44,7 @@ fn main() -> Result<(), Box<dyn Error>> {
                 time_fin,
             };
 
-            writeln!(&mut output_file, "고에너지물리계산 박찬범 {log}")?;
+            writeln!(&mut output_file, "고에너지물리계산 장상현 {log}")?;
         }
     }
 
